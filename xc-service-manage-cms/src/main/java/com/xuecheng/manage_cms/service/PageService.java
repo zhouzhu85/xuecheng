@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @author zhouzhu
  * @Description
@@ -83,4 +85,30 @@ public class PageService {
          //添加失败
          return new CmsPageResult(CommonCode.FAIL,null);
      }
+
+    public CmsPage findById(String id) {
+        Optional<CmsPage> optional = cmsPageRepository.findById(id);
+        if (optional.isPresent()){
+            return optional.get();
+        }
+        return null;
+    }
+
+    public CmsPageResult update(String id, CmsPage cmsPage) {
+         CmsPage one=this.findById(id);
+         if (one!=null){
+             one.setTemplateId(cmsPage.getTemplateId());
+             one.setSiteId(cmsPage.getSiteId());
+             one.setPageAliase(cmsPage.getPageAliase());
+             one.setPageName(cmsPage.getPageName());
+             one.setPageWebPath(cmsPage.getPageWebPath());
+             one.setPagePhysicalPath(cmsPage.getPagePhysicalPath());
+             CmsPage save = cmsPageRepository.save(one);
+             if (save!=null){
+                 CmsPageResult cmsPageResult=new CmsPageResult(CommonCode.SUCCESS,save);
+                 return cmsPageResult;
+             }
+         }
+        return new CmsPageResult(CommonCode.FAIL,null);
+    }
 }
