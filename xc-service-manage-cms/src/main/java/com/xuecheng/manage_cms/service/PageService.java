@@ -2,7 +2,9 @@ package com.xuecheng.manage_cms.service;
 
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
+import com.xuecheng.framework.domain.cms.response.CmsCode;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -78,13 +80,12 @@ public class PageService {
          //校验页面名称、站点id、页面webpath的唯一性
          //根据页面名称、站点id、页面webpath去查询cms_page集合，如果查到说明此页面已经存在，如果查询不到再继续添加
          CmsPage oldCmsPage = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
-         if (oldCmsPage==null){
-             cmsPage.setPageId(null);
-             CmsPage pageList = cmsPageRepository.save(cmsPage);
-             return new CmsPageResult(CommonCode.SUCCESS,pageList);
+         if (oldCmsPage!=null){
+             ExceptionCast.cast(CmsCode.CMS_ADDPAGE_EXISTSNAME);
          }
-         //添加失败
-         return new CmsPageResult(CommonCode.FAIL,null);
+         cmsPage.setPageId(null);
+         CmsPage pageList = cmsPageRepository.save(cmsPage);
+         return new CmsPageResult(CommonCode.SUCCESS,pageList);
      }
 
     public CmsPage findById(String id) {
