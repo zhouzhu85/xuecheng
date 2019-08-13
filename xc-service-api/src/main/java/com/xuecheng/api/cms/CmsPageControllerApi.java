@@ -39,7 +39,7 @@ public interface CmsPageControllerApi {
     public CmsPageResult add(CmsPage cmsPage);
 
     @ApiOperation("通过ID查询页面")
-    CmsPage findById(String id);
+    CmsPageResult findById(String id);
 
     @ApiOperation("修改页面")
     CmsPageResult edit(String id,CmsPage cmsPage);

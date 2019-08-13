@@ -103,6 +103,7 @@ public class PageService {
              one.setPageName(cmsPage.getPageName());
              one.setPageWebPath(cmsPage.getPageWebPath());
              one.setPagePhysicalPath(cmsPage.getPagePhysicalPath());
+             one.setPageType(cmsPage.getPageType());
              CmsPage save = cmsPageRepository.save(one);
              if (save!=null){
                  CmsPageResult cmsPageResult=new CmsPageResult(CommonCode.SUCCESS,save);
